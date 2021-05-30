@@ -46,43 +46,53 @@ function CodegenWorkFlow() {
         }
 
     };
+
+    const handleGenerateClick = (event) => {
+        console.log("good good");
+    };
     return (
         <div id="container">
-            <h1>Codegen WorkFlow Generator</h1>
-            <form>
-                <input type="text" id="job-name" placeholder="Job Name" />
-                <input type="text" id="build-command" placeholder="Build Command" />
-                <input type="text" id="spec-url" placeholder="Spec URL" />
-                <input type="text" id="generation-option" placeholder="Generation Option" />
-                <label className="label">Branches</label>
-                <div id="branches">
-                    <input type="button" id="master" value="master" onClick={handleInputClick} />
-                    <input type="button" id="test-framework" value="test-framework" onClick={handleInputClick} />
-                    <input type="button" id="3.0.0" value="3.0.0" onClick={handleInputClick} />
-                </div>
+            <div id="sub-container-0">
+                <h1>Codegen WorkFlow Generator</h1>
+                <form>
+                    <input type="text" id="job-name" placeholder="Job Name" />
+                    <input type="text" id="build-command" placeholder="Build Command" />
+                    <input type="text" id="spec-url" placeholder="Spec URL" />
+                    <input type="text" id="generation-option" placeholder="Generation Option" />
+                    <label className="label">Branches</label>
+                    <div id="branches">
+                        <input type="button" id="master" value="master" onClick={handleInputClick} />
+                        <input type="button" id="test-framework" value="test-framework" onClick={handleInputClick} />
+                        <input type="button" id="3.0.0" value="3.0.0" onClick={handleInputClick} />
+                    </div>
 
-                <select id="versions" onChange={handleVersionChange}>
-                    <option value="v2">V2</option>
-                    <option value="v3">V3</option>
-                </select>
-                <select id="languages" onChange={handleLanguageChange}>
-                    <option value="ada">Ada</option>
-                    <option value="aspnetcore">AspNet</option>
-                    <option value="clojure">Clojure</option>
-                    <option value="csharp">Csharp</option>
-                    <option value="csharp-dotnet2">Csharp Dotnet</option>
-                    <option value="elixir">Elixir</option>
-                    <option value="go">Go</option>
-                    <option value="go-server">Go Server</option>
-                    <option value="java">Java</option>
-                    <option value="javascript">Javascript</option>
-                    <option value="php">PHP</option>
-                    <option value="python">Python</option>
-                </select>
-                <input type="button" name="numberOfGuests" value="Generate"
-                    onChange={handleVersionChange} />
+                    <select id="versions" onChange={handleVersionChange}>
+                        <option value="v2">V2</option>
+                        <option value="v3">V3</option>
+                    </select>
+                    <select id="languages" onChange={handleLanguageChange}>
+                        <option value="ada">Ada</option>
+                        <option value="aspnetcore">AspNet</option>
+                        <option value="clojure">Clojure</option>
+                        <option value="csharp">Csharp</option>
+                        <option value="csharp-dotnet2">Csharp Dotnet</option>
+                        <option value="elixir">Elixir</option>
+                        <option value="go">Go</option>
+                        <option value="go-server">Go Server</option>
+                        <option value="java">Java</option>
+                        <option value="javascript">Javascript</option>
+                        <option value="php">PHP</option>
+                        <option value="python">Python</option>
+                    </select>
+                    <input type="button" id="button" value="Generate" onChange={handleGenerateClick} />
 
-            </form>
+                </form>
+            </div>
+            <div id="sub-container-1">
+                <span>
+                    some text is going to be placed here.
+                </span>
+            </div>
         </div>
     );
 }
