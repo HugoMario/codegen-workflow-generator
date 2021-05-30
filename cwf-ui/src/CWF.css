@@ -49,6 +49,7 @@ h1{
 a,
 label,
 select,
+textarea,
 input {
     font-family: 'Open Sans Condensed', sans-serif;
     text-decoration: none;
