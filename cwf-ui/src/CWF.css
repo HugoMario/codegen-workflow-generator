@@ -49,12 +49,31 @@ h1{
 a,
 label,
 select,
-textarea,
 input {
     font-family: 'Open Sans Condensed', sans-serif;
     text-decoration: none;
     position: relative;
     width: 80%;
+    display: block;
+    margin: 9px auto;
+    font-size: 17px;
+    color: #fff;
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    background: rgba(3,3,3,.1);
+    -webkit-transition: all 2s ease-in-out;
+    -moz-transition: all 2s ease-in-out;
+    -o-transition: all 2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+textarea {
+    font-family: 'Open Sans Condensed', sans-serif;
+    text-decoration: none;
+    position: relative;
+    width: 90%;
+    height: 90%;
     display: block;
     margin: 9px auto;
     font-size: 17px;
