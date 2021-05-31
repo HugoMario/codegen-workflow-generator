@@ -15,20 +15,18 @@ def generate():
     content = request.json
 
     branches = list()
-    if content["masterBranch"] == "true":
+    if content["masterBranch"]:
         branches.append("master")
-    if content["testBranch"] == "true":
+    if content["testBranch"]:
         branches.append("test-framework")
-    if content["threeBranch"] == "true":
+    if content["threeBranch"]:
         branches.append("3.0.0")
 
     content["branch"] = branches
 
-    output = ""
     with open('workflow.mustache', 'r') as template:
         output = chevron.render(template, content)
 
-    print(output)
     data = dict()
     data["output"] = output
 
