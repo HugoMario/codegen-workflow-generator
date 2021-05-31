@@ -3,7 +3,7 @@ name: {{name}}
 on:
   # execute on demand
   workflow_dispatch:
-    branches: [{{#branch}}{{{branch}}}{{/branch}}]
+    branches: {{branch}}
 
 jobs:
 
@@ -15,6 +15,7 @@ jobs:
     strategy:
       matrix:
         java: [ 8 ]
+
 {{=<% %>=}}
     steps:
       - uses: actions/checkout@v2
@@ -24,7 +25,7 @@ jobs:
       - name: build codegen
         run: |
           mkdir codegen-cli
-          echo "BUILDING ${{ env.VERSION }}"
+          echo "BUILDING Codegen"
           mvn -version
           mvn -q -B package -DskipTests -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 -Dmaven.wagon.http.retryHandler.count=3
           cp modules/swagger-codegen-cli/target/swagger-codegen-cli.jar codegen-cli
@@ -33,9 +34,6 @@ jobs:
         with:
           name: codegen-cli
           path: codegen-cli
-
-    env:
-      VERSION: ${{ github.event.inputs.version }}
 
   generate:
 
@@ -66,10 +64,10 @@ jobs:
         continue-on-error: true
         uses: ./.github/actions/generate
         with:
-          language: {{language}}
+          language: "{{language}}"
           job-name: {{=<% %>=}}${{ env.JOB_NAME }}<%={{ }}=%>
-          spec-url: {{specUrl}}
-          options: "{{options}}"
+          spec-url: "{{specUrl}}"
+          options: " {{options}}"
 {{=<% %>=}}
       - id: outcome
         run: |
@@ -96,7 +94,7 @@ jobs:
       JOB_NAME: "{{jobName}}"
 
   build:
-{{=<% %>=}}
+
     needs: generate
     if: contains(needs.generate.outputs.generate_outcome, 'success')
     runs-on: ubuntu-latest
@@ -105,12 +103,18 @@ jobs:
     ###############################################
     ##### DYNAMIC: Dependent on build environment
     ###############################################
+    {{#isJavaEnv}}
       matrix:
         java-version: [1.8]
+    {{/isJavaEnv}}
+    {{#isJavascriptEnv}}
+      matrix:
+        node-version: [12.x]
+    {{/isJavascriptEnv}}
     ###############################################
     ##### END DYNAMIC: Dependent on build environment
     ###############################################
-
+{{=<% %>=}}
     steps:
       - uses: actions/checkout@v2
       - name: Download artifacts
@@ -122,16 +126,26 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: ${{ env.JOB_NAME }}generate_logs
-      ###############################################
-      ##### DYNAMIC: Dependent on build environment
-      ###############################################
+    ###############################################
+    ##### DYNAMIC: Dependent on build environment
+    ###############################################
+<%={{ }}=%>
+      {{#isJavaEnv}}
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
-          java-version: ${{ matrix.java-version }}
-      ###############################################
-      ##### END DYNAMIC: Dependent on build environment
-      ###############################################
+          java-version: {{=<% %>=}}${{ matrix.java-version }}<%={{ }}=%>
+      {{/isJavaEnv}}
+      {{#isJavascriptEnv}}
+      - name: Use Node.js {{=<% %>=}}${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}<%={{ }}=%>
+      {{/isJavascriptEnv}}
+{{=<% %>=}}
+    ###############################################
+    ##### END DYNAMIC: Dependent on build environment
+    ###############################################
       - name: build
         id: build
         uses: ./.github/actions/build
@@ -139,7 +153,9 @@ jobs:
         with:
           path: generated/${{ env.JOB_NAME }}
           job-name: ${{ env.JOB_NAME }}
-          build-commands: "gprbuild -Ppetstore -p"
+<%={{ }}=%>
+          build-commands: "{{buildCommand}}"
+{{=<% %>=}}
       - id: outcome
         run: |
           echo "::set-output name=build_outcome::${{ steps.build.outcome }}"
