@@ -60,12 +60,39 @@ function CodegenWorkFlow() {
 
     const handleGenerateClick = (event) => {
 
-        const name = "Test Framework" + version.toUpperCase() + " " + workflowInputRef.current.value;
+        const name = "Test Framework " + version.toUpperCase() + " " + workflowInputRef.current.value;
         let jobName =  workflowInputRef.current.value.toLowerCase() + "-" + version + " sample";
-        jobName = jobName.replace(" ", "-")
+        jobName = jobName.replaceAll(" ", "-")
         const buildCommand =  buildCommandInputRef.current.value;
         const specUrl =  specInputRef.current.value;
         const options =  optionInputRef.current.value;
+
+        const isJavaEnv = language === "java"
+                || language === "java-play-framework"
+                || language === "java-vertx"
+                || language === "jaxrs-cxf-client"
+                || language === "jaxrs-cxf"
+                || language === "inflector"
+                || language === "jaxrs-cxf-cdi"
+                || language === "jaxrs-spec"
+                || language === "jaxrs-jersey"
+                || language === "jaxrs-di"
+                || language === "jaxrs-resteasy-eap"
+                || language === "jaxrs-resteasy"
+                || language === "micronaut"
+                || language === "spring"
+
+        const isJavascriptEnv = language === "javascript"
+            || language === "nodejs-server"
+            || language === "typescript-angular"
+            || language === "typescript-axios"
+            || language === "typescript-fetch"
+            || language === "typescript-aurelia"
+            || language === "typescript-jquery"
+            || language === "typescript-node"
+
+        const isAspEnv = language === "aspnetcore"
+        const isPHPEnv = language === "php"
 
         const data = {
             "name": name,
@@ -74,6 +101,8 @@ function CodegenWorkFlow() {
             "language": language,
             "specUrl": specUrl,
             "options": options,
+            "isJavaEnv": isJavaEnv,
+            "isJavascriptEnv": isJavascriptEnv,
             "masterBranch": branchMasterSelected,
             "testBranch": branchTestFrameworkSelected,
             "threeBranch": branch3Selected
@@ -120,6 +149,7 @@ function CodegenWorkFlow() {
                         <option value="groovy">groovy</option>
                         <option value="dynamic-html">dynamic-html</option>
                         <option value="java">java</option>
+                        <option value="java-play-framework">java-play-framework</option>
                         <option value="javascript">javascript</option>
                         <option value="java-vertx">java-vertx</option>
                         <option value="jaxrs-cxf-client">jaxrs-cxf-client</option>
